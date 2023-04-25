@@ -41,6 +41,7 @@ class Pelican_Agent(Agent):
 
 
 	def action_lookup(self, action):
+		action = action.tolist() # convert numpy array to list, because when doing selfplay.py, action is a numpy array
 		return ACTION_LOOKUP[action]
 
 ACTION_LOOKUP = {
