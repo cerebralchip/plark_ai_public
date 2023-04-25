@@ -3,7 +3,7 @@ import sys
 import os
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 def test_load_basic_pelican_agent():

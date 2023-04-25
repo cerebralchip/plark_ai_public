@@ -1,7 +1,7 @@
 import os, subprocess, time, signal
-import gym
-from gym import error, spaces, utils
-from gym.utils import seeding
+import gymnasium as gym
+from gymnasium import error, spaces, utils
+from gymnasium.utils import seeding
 import numpy as np 
 
 import sys
@@ -36,7 +36,8 @@ class PlarkEnvGuidedReward(PlarkEnv):
 		gameState,uioutput = self.env.activeGames[len(self.env.activeGames)-1].game_step(action)
 		self.status = gameState
 		self.uioutput = uioutput 
-
+		terminated = False
+		truncated = False
 		reward = 0
 		self.new_pelican_col = self.env.activeGames[len(self.env.activeGames)-1].pelicanPlayer.col
 		self.new_pelican_row = self.env.activeGames[len(self.env.activeGames)-1].pelicanPlayer.row
@@ -75,15 +76,20 @@ class PlarkEnvGuidedReward(PlarkEnv):
 
 		ob = self._observation()
 		
+		terminated = False
+		truncated = False		
 		
 		done = False  
 		if self.status == "PELICANWIN" or self.status == "BINGO" or self.status == "WINCHESTER" or self.status == "ESCAPE": 
-			done = True
+			if self.status == "BINGO":
+				truncated = True
+			else:
+				terminated = True
 			if self.verbose:
 				logger.info("GAME STATE IS " + self.status)   
 			if self.status in ["ESCAPE","BINGO","WINCHESTER"]:
 				reward = -1      
-		return ob, reward, done, {}
+		return ob, reward, terminated, truncated, {}
 	
 
 

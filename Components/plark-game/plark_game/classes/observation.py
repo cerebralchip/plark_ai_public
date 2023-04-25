@@ -1,5 +1,5 @@
-import gym
-from gym import error, spaces, utils
+import gymnasium as gym
+from gymnasium import error, spaces, utils
 
 import logging
 logging.basicConfig(level=logging.INFO)

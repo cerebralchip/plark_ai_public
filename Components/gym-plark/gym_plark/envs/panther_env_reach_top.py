@@ -1,7 +1,7 @@
 import os, subprocess, time, signal
-import gym
-from gym import error, spaces, utils
-from gym.utils import seeding
+import gymnasium as gym
+from gymnasium import error, spaces, utils
+from gymnasium.utils import seeding
 import numpy as np 
 from gym_plark.envs.plark_env import PlarkEnv
 

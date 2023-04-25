@@ -12,18 +12,18 @@ import time
 import imageio
 import numpy as np
 import io
-import gym
+import gymnasium as gym
 
-from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.evaluation import evaluate_policy
-from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.evaluation import evaluate_policy
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 from plark_game import classes
 import gym_plark
 
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3 import DQN, PPO, A2C, ACKTR
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 from tensorboardX import SummaryWriter
 
@@ -32,7 +32,7 @@ import datetime
 import os
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -94,7 +94,7 @@ def save_model(exp_path, model, model_type, env, basicdate):
 def run_sonobuoy_training(
                     exp_name,exp_path,
                     basicdate,
-                    model_type='PPO2',
+                    model_type='PPO',
                     n_eval_episodes=10,
                     training_intervals=100,
                     max_steps=10000,
@@ -111,7 +111,7 @@ def run_sonobuoy_training(
         tb_log_name = None
 
         
-    env = gym.make('plark-env-v0', panther_agent_filepath='/data/agents/models/PPO2_20200429_073132_panther/')
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', panther_agent_filepath='/data/agents/models/PPO2_20200429_073132_panther/')
     
     if pelican_agent_filepath:
         logger.info('Loading agent from file: ' + pelican_agent_filepath)
@@ -120,21 +120,20 @@ def run_sonobuoy_training(
             model = DQN.load(pelican_agent_filepath)
             model.set_env(env)
             
-        elif model_type.lower() == 'ppo2':
-            model = PPO2.load(pelican_agent_filepath)
+        elif model_type.lower() == 'ppo':
+            model = PPO.load(pelican_agent_filepath)
             model.set_env(DummyVecEnv([lambda: env]))
             
         elif model_type.lower() == 'a2c':
             model = A2C.load(pelican_agent_filepath)
             model.set_env(env)
             
-        elif model_type.lower() == 'acktr':
-            model = ACKTR.load(pelican_agent_filepath)
-            model.set_env(env)
-
+        # elif model_type.lower() == 'acktr':
+        #     model = ACKTR.load(pelican_agent_filepath)
+        #     model.set_env(env)
     else:   
         # Instantiate the env and model
-        model = PPO2('CnnPolicy', env)
+        model = PPO('CnnPolicy', env)
 
     # Start training 
     train_agent(exp_path,model,env,training_intervals,max_steps,model_type,basicdate,writer,tb_log_name,reward_margin)
@@ -153,4 +152,4 @@ if __name__ == '__main__':
 
     logger.info(exp_path)
 
-    run_sonobuoy_training(exp_name,exp_path,basicdate,model_type='PPO2',n_eval_episodes=10,training_intervals=100,max_steps=1000,log_to_tb=True,reward_margin=25)
+    run_sonobuoy_training(exp_name,exp_path,basicdate,model_type='PPO',n_eval_episodes=10,training_intervals=100,max_steps=1000,log_to_tb=True,reward_margin=25)

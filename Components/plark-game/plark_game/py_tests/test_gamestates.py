@@ -3,7 +3,7 @@ import sys
 import os
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 def test_panther_gamestate_bingo():
     # Tests the BINGO gamestate from the panthers perspective

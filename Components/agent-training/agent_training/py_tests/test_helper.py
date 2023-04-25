@@ -1,8 +1,8 @@
 from gym_plark.envs import plark_env
 from .. import helper
-from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.vec_env import SubprocVecEnv
-from stable_baselines import PPO2
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.vec_env import SubprocVecEnv
+from stable_baselines3 import PPO2
 import os
 import datetime
 
@@ -93,9 +93,9 @@ def test_make_new_model_PPO2():
 	env = MockEnv(driving_agent='pelican',config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
 	policy = "CnnPolicy"
 	
-	model = helper.make_new_model("PPO2",policy,env, None)
+	model = helper.make_new_model("PPO",policy,env, None)
 	
-	if "PPO2" in str(type(model)):
+	if "PPO" in str(type(model)):
 		PPO = True
 	assert PPO == True
 
@@ -140,8 +140,8 @@ def test_save_model_with_env_settings():
 	testdir = "/tmp/testing"
 
 	# Should handle regular envs
-	helper.save_model_with_env_settings(testdir, model1, "ppo2", env1, basicdate1)
-	model_label1 = helper.model_label("ppo2", basicdate1, 'pelican')
+	helper.save_model_with_env_settings(testdir, model1, "ppo", env1, basicdate1)
+	model_label1 = helper.model_label("ppo", basicdate1, 'pelican')
 	expected_dir1 = os.path.join(testdir, model_label1)
 	metadata_file1 = os.path.join(expected_dir1, "metadata.json")
 	model_file1 = os.path.join(expected_dir1, model_label1 + ".zip")
@@ -152,8 +152,8 @@ def test_save_model_with_env_settings():
 	basicdate2 = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 	# Should handle VecEnv
-	helper.save_model_with_env_settings("/tmp/testing", model2, "ppo2", env2, basicdate2)
-	model_label2 = helper.model_label("ppo2", basicdate2, 'pelican')
+	helper.save_model_with_env_settings("/tmp/testing", model2, "ppo", env2, basicdate2)
+	model_label2 = helper.model_label("ppo", basicdate2, 'pelican')
 	expected_dir2 = os.path.join(testdir, model_label2)
 	metadata_file2 = os.path.join(expected_dir2, "metadata.json")
 	model_file2 = os.path.join(expected_dir2, model_label2 + ".zip")

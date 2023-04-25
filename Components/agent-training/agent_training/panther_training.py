@@ -13,16 +13,16 @@ import imageio
 import numpy as np
 import io
 
-from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.evaluation import evaluate_policy
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.evaluation import evaluate_policy
 
 from plark_game import classes
 from gym_plark.envs import panther_env_reach_top
 
 
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3 import DQN, PPO, A2C 
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 from tensorboardX import SummaryWriter
 
@@ -31,7 +31,7 @@ import datetime
 import os
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -102,7 +102,7 @@ def save_model(exp_path, model, model_type, env, basicdate):
 def run_panther_training(
                     exp_name,exp_path,
                     basicdate,
-                    model_type='PPO2',
+                    model_type='PPO',
                     n_eval_episodes=10,
                     training_intervals=100,
                     max_steps=10000,
@@ -119,7 +119,7 @@ def run_panther_training(
 
     # Instantiate the env and model
     env = panther_env_reach_top.PantherEnvReachTop(config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    model = PPO2('CnnPolicy', env)
+    model = PPO('CnnPolicy', env)
 
     # Start training 
     train_agent(exp_path,model,env,training_intervals,max_steps,model_type,basicdate,writer,tb_log_name,reward_margin)
@@ -141,4 +141,4 @@ if __name__ == '__main__':
 
     logger.info(exp_path)
 
-    run_panther_training(exp_name,exp_path,basicdate,model_type='PPO2',n_eval_episodes=10,training_intervals=100,max_steps=1000,log_to_tb=True,reward_margin=25)
+    run_panther_training(exp_name,exp_path,basicdate,model_type='PPO',n_eval_episodes=10,training_intervals=100,max_steps=1000,log_to_tb=True,reward_margin=25)

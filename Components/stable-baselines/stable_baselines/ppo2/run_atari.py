@@ -1,4 +1,4 @@
-from stable_baselines import PPO2, logger
+from stable_baselines import PPO, logger
 from stable_baselines.common.cmd_util import make_atari_env, atari_arg_parser
 from stable_baselines.common.vec_env import VecFrameStack
 from stable_baselines.common.policies import CnnPolicy, CnnLstmPolicy, CnnLnLstmPolicy, MlpPolicy

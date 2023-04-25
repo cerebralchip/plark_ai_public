@@ -2,9 +2,9 @@ import os
 import subprocess
 import time
 import signal
-import gym
-from gym import error, spaces, utils
-from gym.utils import seeding
+import gymnasium as gym
+from gymnasium import error, spaces, utils
+from gymnasium.utils import seeding
 import numpy as np
 
 import sys

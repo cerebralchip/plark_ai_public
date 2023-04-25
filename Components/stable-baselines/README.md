@@ -106,13 +106,13 @@ Most of the library tries to follow a sklearn-like syntax for the Reinforcement 
 
 Here is a quick example of how to train and run PPO2 on a cartpole environment:
 ```python
-import gym
+import gymnasium as gym
 
-from stable_baselines.common.policies import MlpPolicy
-from stable_baselines.common.vec_env import DummyVecEnv
-from stable_baselines import PPO2
+from stable_baselines3.common.policies import MlpPolicy
+from stable_baselines3.common.vec_env import DummyVecEnv
+from stable_baselines3 import PPO2
 
-env = gym.make('CartPole-v1')
+env = gym.make("GymV26Environment-v0", env_id='CartPole-v1')
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
@@ -120,7 +120,7 @@ env = gym.make('CartPole-v1')
 model = PPO2(MlpPolicy, env, verbose=1)
 model.learn(total_timesteps=10000)
 
-obs = env.reset()
+obs, info = env.reset()
 for i in range(1000):
     action, _states = model.predict(obs)
     obs, rewards, dones, info = env.step(action)
@@ -132,7 +132,7 @@ env.close()
 Or just train a model with a one liner if [the environment is registered in Gym](https://github.com/openai/gym/wiki/Environments) and if [the policy is registered](https://stable-baselines.readthedocs.io/en/master/guide/custom_policy.html):
 
 ```python
-from stable_baselines import PPO2
+from stable_baselines3 import PPO2
 
 model = PPO2('MlpPolicy', 'CartPole-v1').learn(10000)
 ```

@@ -1,4 +1,4 @@
-from gym import spaces
+from gymnasium import spaces
 from gym_plark.envs.plark_env import PlarkEnv
 import logging
 

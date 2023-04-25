@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
-from stable_baselines.bench.monitor import load_results
+from stable_baselines.common.monitor import load_results
 
 # matplotlib.use('TkAgg')  # Can change to 'Agg' for non-interactive mode
 plt.rcParams['svg.fonttype'] = 'none'

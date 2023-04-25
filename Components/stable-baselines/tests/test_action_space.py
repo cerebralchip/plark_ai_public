@@ -1,15 +1,14 @@
 import pytest
 import numpy as np
 
-from stable_baselines import A2C, PPO1, PPO2, TRPO
+from stable_baselines import A2C, PPO, TRPO
 from stable_baselines.common.identity_env import IdentityEnvMultiBinary, IdentityEnvMultiDiscrete
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines.common.evaluation import evaluate_policy
 
 MODEL_LIST = [
     A2C,
-    PPO1,
-    PPO2,
+    PPO,
     TRPO
 ]
 

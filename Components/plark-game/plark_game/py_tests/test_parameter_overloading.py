@@ -1,12 +1,12 @@
 from ..classes import *
 import sys
 import os
-import gym
+import gymnasium as gym
 from plark_game import classes
 import gym_plark
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 #
 # Game settings tests
@@ -34,7 +34,7 @@ def test_gym_env_parameter_overload_maximum_turns():
                 'maximum_turns': maximum_turns
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.maxTurns == maximum_turns
@@ -73,7 +73,7 @@ def test_gym_env_parameter_overload_map_width():
                 'pelican_start_row': 0
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.map_width == map_width
@@ -111,7 +111,7 @@ def test_gym_env_parameter_overload_map_height():
                 'pelican_start_row': 0
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
 
     assert game.map_height == map_height
@@ -141,7 +141,7 @@ def test_gym_env_parameter_overload_driving_agent_panther():
                 'pelican_agent_name': "Pelican_Agent_3_Bouys",
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
 
     
@@ -173,7 +173,7 @@ def test_gym_class_parameter_overload_driving_agent_pelican():
                
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
 
     
@@ -204,7 +204,7 @@ def test_gym_env_parameter_overload_render_hex_scale():
                 'hex_scale':10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.hexScale == 10
@@ -231,7 +231,7 @@ def test_gym_env_parameter_overload_render_output_view_all():
                 'output_view_all':False
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.output_view_all == False
@@ -265,7 +265,7 @@ def test_gym_env_parameter_overload_panther_move_limit():
                 'panther_move_limit': 0
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.panther_parameters['move_limit'] == 0    
@@ -296,7 +296,7 @@ def test_gym_env_parameter_overload_panther_start_col():
                 'panther_start_col': 0
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.pantherPlayer.col == 0    
@@ -327,7 +327,7 @@ def test_gym_env_parameter_overload_panther_start_row():
                 'panther_start_row': 0
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.pantherPlayer.row == 0
@@ -358,7 +358,7 @@ def test_gym_env_parameter_overload_panther_render_height():
                 'panther_render_height': 10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert  game.panther_parameters['render_height'] == 10
@@ -389,7 +389,7 @@ def test_gym_env_parameter_overload_panther_render_width():
                 'panther_render_width': 10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert  game.panther_parameters['render_width'] == 10
@@ -424,7 +424,7 @@ def test_gym_env_parameter_overload_pelican_move_limit():
                 'pelican_move_limit': 0
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.pelican_parameters['move_limit'] == 0    
@@ -455,7 +455,7 @@ def test_gym_env_parameter_overload_pelican_madman_range():
                 'madman_range': 5
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.pelican_parameters['madman_range'] == 5
@@ -486,7 +486,7 @@ def test_gym_env_parameter_overload_pelican_default_torps():
                 'default_torps': 5
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.pelican_parameters['default_torps'] == 5
@@ -517,7 +517,7 @@ def test_gym_env_parameter_overload_pelican_default_sonobuoys():
                 'default_sonobuoys': 2
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.pelican_parameters['default_sonobuoys'] == 2
@@ -548,7 +548,7 @@ def test_gym_env_parameter_overload_pelican_render_height():
                 'pelican_render_height': 10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert  game.pelican_parameters['render_height'] == 10
@@ -580,7 +580,7 @@ def test_gym_env_parameter_overload_pelican_render_width():
                 'pelican_render_width': 10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert  game.pelican_parameters['render_width'] == 10
@@ -608,7 +608,7 @@ def test_gym_env_parameter_overload_torpedos_turn_limit():
                 'torpedos_turn_limit': 5
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.torpedo_parameters['turn_limit'] == 5
@@ -634,7 +634,7 @@ def test_gym_env_parameter_overload_torpedos_hunt():
                 'torpedos_hunt': False
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.torpedo_parameters['hunt'] == False
@@ -659,7 +659,7 @@ def test_gym_env_parameter_overload_torpedos_speed():
                 'torpedos_speed': [1,1,1,1,1]
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.torpedo_parameters['speed'] == [1,1,1,1,1]
@@ -684,7 +684,7 @@ def test_gym_env_parameter_overload_torpedos_search_range():
                 'torpedos_search_range': 10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.torpedo_parameters['search_range'] == 10
@@ -712,7 +712,7 @@ def test_gym_env_parameter_overload_sonobuoy_active_range():
                 'sonobuoy_active_range': 10
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.sonobuoy_parameters['active_range'] == 10
@@ -740,7 +740,7 @@ def test_gym_env_parameter_overload_sonobuoy_display_range():
                 'display_range': False
     }
 
-    gym_env = gym.make('plark-env-v0', **kwargs)
+    gym_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', **kwargs)
     game = gym_env.env.activeGames[len(gym_env.env.activeGames)-1]
     
     assert game.sonobuoy_parameters['display_range'] == False

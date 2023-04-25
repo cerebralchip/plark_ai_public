@@ -9,10 +9,10 @@ import numpy as np
 from plark_game import classes
 from gym_plark.envs import plark_env
 
-from stable_baselines.common.env_checker import check_env
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv, VecEnv
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3 import DQN, PPO, A2C
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv, VecEnv
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -24,12 +24,12 @@ def model_label(modeltype,basicdate,modelplayer):
 def make_new_model(model_type,policy,env, tensorboard_log=None):
     if model_type.lower() == 'dqn':
         model = DQN(policy,env,tensorboard_log=tensorboard_log)
-    elif model_type.lower() == 'ppo2':
-        model = PPO2(policy,env,tensorboard_log=tensorboard_log)
+    elif model_type.lower() == 'ppo':
+        model = PPO(policy,env,tensorboard_log=tensorboard_log)
     elif model_type.lower() == 'a2c':
         model = A2C(policy,env,tensorboard_log=tensorboard_log)
-    elif model_type.lower() == 'acktr':
-        model = ACKTR(policy,env,tensorboard_log=tensorboard_log)
+    # elif model_type.lower() == 'acktr':
+    #     model = ACKTR(policy,env,tensorboard_log=tensorboard_log)
     return model
 
 def train_until(model, env, victory_threshold=0.8, victory_trials=10, max_seconds=120, testing_interval=200, tb_writer=None, tb_log_name=None):
@@ -235,7 +235,7 @@ def custom_eval(model, env, n_eval_episodes=10, deterministic=True,
     totalwin = 0
     episode_rewards, episode_lengths = [], []
     for _ in range(n_eval_episodes):
-        obs = env.reset()
+        obs, info = env.reset()
         done, state = False, None
         episode_reward = 0.0
         episode_length = 0
@@ -335,23 +335,23 @@ def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, pa
 def make_video(model,env,video_file_path,n_steps = 10000,fps=10,deterministic=False,basewidth = 512,verbose =False):
     # Test the trained agent
     # This is when you have a stable baselines model and an gym env
-    obs = env.reset()
+    obs, info = env.reset()
     writer = imageio.get_writer(video_file_path, fps=fps) 
     hsize = None
     for step in range(n_steps):
         image = env.render(view='ALL')
         action, _ = model.predict(obs, deterministic=deterministic)
-    
-        obs, reward, done, info = env.step(action)
+        
+        obs, reward, terminated, truncated, info = env.step(action)
         if verbose:
-            logger.info("Step: "+str(step)+" Action: "+str(action)+' Reward:'+str(reward)+' Done:'+str(done))
+            logger.info("Step: "+str(step)+" Action: "+str(action)+' Reward:'+str(reward)+' terminated:'+str(terminated)+' truncated:'+str(truncated))
 
         if hsize is None:
             wpercent = (basewidth/float(image.size[0]))
             hsize = int((float(image.size[1])*float(wpercent)))
         res_image = image.resize((basewidth,hsize), PIL.Image.ANTIALIAS)
         writer.append_data(np.copy(np.array(res_image)))
-        if done:
+        if terminated or truncated:
             if verbose:
                 logger.info("Goal reached:, reward="+ str(reward))
             break

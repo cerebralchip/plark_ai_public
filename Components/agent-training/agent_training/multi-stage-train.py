@@ -1,6 +1,6 @@
 import requests
-from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.evaluation import evaluate_policy
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.evaluation import evaluate_policy
 from io import BytesIO
 import PIL.Image
 from IPython.display import display,clear_output,HTML
@@ -21,12 +21,12 @@ import helper
 import logging
 from gym_plark.envs import plark_env,plark_env_guided_reward,plark_env_top_left
 import datetime
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv
-%matplotlib inline
-%load_ext autoreload
-%autoreload 2
+from stable_baselines3 import DQN, PPO, A2C
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
+# %matplotlib inline
+# %load_ext autoreload
+# %autoreload 2
 
 display(HTML(data="""
 <style>
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     modelplayer = "PELICAN"
     
     ## Define the type of RL algorithm you are using.
-    modeltype = "DQN"
+    modeltype = "PPO"
     
     ## Used the format to get date
     basicdate = str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     print("Stage 1 Training Started")
     env = plark_env_guided_reward.PlarkEnvGuidedReward(config_file_path=very_easy_config)
-    model = DQN('CnnPolicy', env)
+    model = PPO('CnnPolicy', env)
     model.learn(50)
     logger.info('STARTING STAGE 1 INITIAL EVALUATION')
     stg1_mean_reward, n_steps = evaluate_policy(model, env, n_eval_episodes=1, deterministic=False, render=False, callback=None, reward_threshold=None, return_episode_rewards=False)
@@ -108,3 +108,5 @@ if __name__ == "__main__":
                 logger.info("Stage Three Threshold Met")
                 logger.info("Multi-Stage-Training-Complete")
     model_path,model_dir, modellabel = helper.save_model_with_env_settings(basepath,model,modeltype,env,basicdate)
+
+

@@ -3,7 +3,7 @@ from ..classes.panther import Panther
 from ..classes.sonobuoy import Sonobuoy
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 def test_oddq_to_cube():
     map_width = 10

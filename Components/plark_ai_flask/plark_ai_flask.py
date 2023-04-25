@@ -22,15 +22,21 @@ from plark_game import classes
 from agent_training import helper 
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__, static_url_path='/',
-            static_folder='builtangularSite/dist/', template_folder='builtangularSite/dist/')
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'builtangularSite/dist/')
 
+app = Flask(__name__, static_url_path='/', static_folder=TEMPLATE_DIR, template_folder=TEMPLATE_DIR)
+def list_templates():
+    for name in app.jinja_loader.list_templates():
+        print(name)
+
+list_templates()
 trained_agents_filepath = '/data/agents/models'
 basic_agents_filepath = '/Components/plark-game/plark_game/agents/basic'
 config_filepath = '/Components/plark-game/plark_game/game_config'

@@ -16,19 +16,19 @@ import matplotlib.pyplot as plt
 import io
 import os, sys
 
-from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.evaluation import evaluate_policy
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.evaluation import evaluate_policy
 from gym_plark.envs import plark_env,plark_env_guided_reward,plark_env_top_left
 
 import datetime
 basepath = '/data/agents/models'
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3 import DQN, PPO, A2C
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
 import helper
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -51,7 +51,7 @@ check_env(env)
 ## Define the player type we are training.
 modelplayer = "PELICAN"
 ## Define the type of RL algorithm you are using.
-modeltype = "DQN"
+modeltype = "PPO"
 ## Specify the date and time for this training.
 basicdate = str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
 ## location where models will be saved
@@ -59,8 +59,8 @@ basicdate = str(datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
 # Instantiate the env
 env = plark_env_guided_reward.PlarkEnvGuidedReward()
 
-model = DQN('CnnPolicy', env)
-#model = A2C('CnnPolicy', env)
+# model = DQN('CnnPolicy', env)
+model = PPO('CnnPolicy', env)
 model.learn(50)
 
 retrain_iter = []
@@ -69,6 +69,7 @@ retrain_values = []
 logger.info('****** STARTING EVALUATION *******')
 
 mean_reward, n_steps = evaluate_policy(model, env, n_eval_episodes=1, deterministic=False, render=False, callback=None, reward_threshold=None, return_episode_rewards=False)
+print(str(mean_reward))
 retrain_iter.append(str(0))
 retrain_values.append(mean_reward)
 
@@ -100,7 +101,7 @@ def retrain(mean_reward, target_reward, count):
         
         mean_reward, n_steps = evaluate_policy(model, env, n_eval_episodes=1, deterministic=False, render=False, callback=None, reward_threshold=None, return_episode_rewards=False)
         retrain_values.append(mean_reward)
-        
+        print(str(mean_reward))
         if mean_reward >= target_reward:
             save()
         if mean_reward < target_reward:
@@ -109,3 +110,5 @@ def retrain(mean_reward, target_reward, count):
     logger.info('Model Training Reached Target Level')
 
 retrain(mean_reward, 2, 1)
+
+

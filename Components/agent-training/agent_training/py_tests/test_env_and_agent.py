@@ -13,38 +13,38 @@ import imageio
 import numpy as np
 import io
 
-from stable_baselines.common.env_checker import check_env
+from stable_baselines3.common.env_checker import check_env
 
 from plark_game import classes
 from gym_plark.envs import plark_env,plark_env_guided_reward,plark_env_top_left, plark_env_non_image_state
 
 
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv
-from gym import spaces
+from stable_baselines3 import DQN, PPO, A2C
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
+from gymnasium import spaces
 
 from .. import helper 
 import datetime
 import os
 import gym_plark
 import signal
-import gym
+import gymnasium as gym
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 
 def test_base_env():
     # env = plark_env.PlarkEnv()
-    env = gym.make('plark-env-v0')
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0')
     check_env(env)
 
 def test_base_env_reward():
     # env = plark_env.PlarkEnv(config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('plark-env-v0')
-    env.reset()
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0')
+    obs, info = env.reset()
     #move no reward
     obs, reward, done, info = env.step(3)
     assert reward == 0
@@ -78,7 +78,7 @@ def test_base_env_reward():
 
 def test_guided_env():
     # env = plark_env_guided_reward.PlarkEnvGuidedReward()
-    env = gym.make('plark-env-guided-reward-v0')
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-guided-reward-v0')
     check_env(env)
     
     assert "PlarkEnvGuidedReward" in str(type(env))
@@ -87,7 +87,7 @@ def test_guided_env():
 
 def test_env_and_agent():
     # env = plark_env.PlarkEnv(config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('plark-env-v0')
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0')
     check_env(env)
     
     training_steps = 10
@@ -98,7 +98,7 @@ def test_env_and_agent():
     mean_reward, n_steps, victories = helper.evaluate_policy(model, env, n_eval_episodes=n_eval_episodes, deterministic=False, render=False, callback=None, reward_threshold=None, return_episode_rewards=False)
     
     assert "PlarkEnv" in str(type(env))
-    assert "PPO2" in str(type(model))
+    assert "PPO" in str(type(model))
     
 def test_video_of_agents_manual():
     video_path = '/data/test_video/'
@@ -107,7 +107,7 @@ def test_video_of_agents_manual():
     panther_agent_filepath = '/data/agents/models/test_20200325_184254/PPO2_20200325_184254_panther/'
 
     # pelican_env = plark_env.PlarkEnv(driving_agent='pelican',panther_agent_filepath=panther_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    pelican_env = gym.make('plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath)
+    pelican_env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath)
     
     pelican_load_path = '/data/agents/models/test_20200325_184254/PPO2_20200325_184254_pelican/PPO2_20200325_184254_pelican.zip'
     pelican_model = PPO2.load(pelican_load_path)
@@ -126,7 +126,7 @@ def test_video_of_agents():
 def test_env_and_pre_trained_agent():
     panther_agent_filepath = '/data/agents/models/test_20200325_184254/PPO2_20200325_184254_panther/' #This model is in minio or the package.
     # env = plark_env.PlarkEnv(driving_agent='pelican',panther_agent_filepath=panther_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath)       
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath)       
     check_env(env)
     
     training_steps = 500
@@ -139,16 +139,16 @@ def test_env_and_pre_trained_agent():
 def test_env_result():
     panther_agent_filepath = '/data/agents/models/test_20200325_184254/PPO2_20200325_184254_panther/' #This model is in minio or the package.
     # env = plark_env.PlarkEnv(driving_agent='pelican',panther_agent_filepath=panther_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath)    
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath)    
     check_env(env)
 
     training_steps = 500
-    model = PPO2('CnnPolicy', env)
+    model = PPO('CnnPolicy', env)
     model.learn(training_steps)
 
     n_eval_episodes = 5
     for _ in range(n_eval_episodes):
-        obs = env.reset()
+        obs, info = env.reset()
         done, state = False, None
         episode_reward = 0.0
         episode_length = 0
@@ -163,9 +163,9 @@ def test_env_result():
 def test_illegal_move_limit_driving_pelican():
     panther_agent_filepath = '/Components/plark-game/plark_game/agents/basic/pantherAgent_move_north.py' #This model is in minio or the package.
     # env = plark_env.PlarkEnv(driving_agent='pelican',panther_agent_filepath=panther_agent_filepath, panther_agent_name='Panther_Agent_Move_North',config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath, panther_agent_name='Panther_Agent_Move_North')    
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', driving_agent='pelican',panther_agent_filepath=panther_agent_filepath, panther_agent_name='Panther_Agent_Move_North')    
     check_env(env)
-    env.reset()
+    obs, info = env.reset()
     # Repeat illegal move (illegal move limit - 1) times
     for i in range(9):
         obs, reward, done, info = env.step(0)
@@ -179,9 +179,9 @@ def test_illegal_move_limit_driving_pelican():
 def test_illegal_move_limit_driving_panther():
     pelican_agent_filepath = '/data/agents/models/test_20200325_184254/PPO2_20200325_184254_pelican/' #This model is in minio or the package.
     # env = plark_env.PlarkEnv(driving_agent='panther',pelican_agent_filepath=pelican_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('plark-env-v0', driving_agent='panther',pelican_agent_filepath=pelican_agent_filepath)  
+    env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', driving_agent='panther',pelican_agent_filepath=pelican_agent_filepath)  
     check_env(env)
-    env.reset()
+    obs, info = env.reset()
     # Repeat illegal move (illegal move limit - 1) times
     for i in range(9):
         obs, reward, done, info = env.step(3)
@@ -202,9 +202,9 @@ def test_illegal_move_limit_non_driving_pelican():
     
     try:
         # env = plark_env.PlarkEnv(driving_agent='panther',pelican_agent_filepath='/Components/plark-game/plark_game/agents/basic/PelicanAgentIllegalMove.py', pelican_agent_name='PelicanAgentIllegalMove',config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced_panther_multi_move.json')
-        env = gym.make('plark-env-v0', driving_agent='panther',pelican_agent_filepath='/Components/plark-game/plark_game/agents/basic/PelicanAgentIllegalMove.py', pelican_agent_name='PelicanAgentIllegalMove',config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced_panther_multi_move.json')  
+        env = gym.make("GymV26Environment-v0", env_id='plark-env-v0', driving_agent='panther',pelican_agent_filepath='/Components/plark-game/plark_game/agents/basic/PelicanAgentIllegalMove.py', pelican_agent_name='PelicanAgentIllegalMove',config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced_panther_multi_move.json')  
         check_env(env)
-        env.reset()
+        obs, info = env.reset()
         game = env.env.activeGames[-1]
         pelicanAgent = game.pelicanAgent
         pelicanAgent.reset_moves_taken()
@@ -243,9 +243,9 @@ def test_illegal_move_limit_non_driving_panther():
 
     try:
         # env = plark_env.PlarkEnv(driving_agent='pelican',panther_agent_filepath='/Components/plark-game/plark_game/agents/basic/PantherAgentIllegalMove.py', panther_agent_name='PantherAgentIllegalMove',config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-        env = gym.make('plark-env-v0',driving_agent='pelican',panther_agent_filepath='/Components/plark-game/plark_game/agents/basic/PantherAgentIllegalMove.py', panther_agent_name='PantherAgentIllegalMove')
+        env = gym.make("GymV26Environment-v0", env_id='plark-env-v0',driving_agent='pelican',panther_agent_filepath='/Components/plark-game/plark_game/agents/basic/PantherAgentIllegalMove.py', panther_agent_name='PantherAgentIllegalMove')
         check_env(env)
-        env.reset()
+        obs, info = env.reset()
         game = env.env.activeGames[-1]
         pantherAgent = game.pantherAgent
         pantherAgent.reset_moves_taken()
@@ -277,7 +277,7 @@ def test_non_image_env():
     observation_space = env.observation_space
     observation_space_size =  observation_space.shape[0]
     
-    obs = env.reset()
+    obs, info = env.reset()
     actual_observation_space_size = len(obs)
     assert observation_space_size == actual_observation_space_size
 

@@ -1,24 +1,38 @@
 import logging
-import gym
-from gym.envs.registration import register
+import gymnasium as gym
+from gymnasium.envs.registration import register
 from .envs import *
 # from gym_plark.envs.plark_env_sonobuoy_deployment import PlarkEnvSonobuoyDeployment 
 
 logger = logging.getLogger(__name__)
 
 
+# def register(id, entry_point, force=True, kwargs=None):
+#     env_specs = gym.envs.registry.env_specs
+#     if id in env_specs.keys():
+#         if not force:
+#             return
+#         del env_specs[id]
+#     gym.register(
+#         id=id,
+#         entry_point=entry_point,
+#         kwargs = kwargs
+#     )
+
 def register(id, entry_point, force=True, kwargs=None):
-    env_specs = gym.envs.registry.env_specs
-    if id in env_specs.keys():
+    env_dict = gym.envs.registration.registry
+
+    if id in env_dict:
         if not force:
             return
-        del env_specs[id]
+        del env_dict[id]
+
     gym.register(
         id=id,
         entry_point=entry_point,
-        kwargs = kwargs
+        kwargs=kwargs
     )
-    
+
 register(
     id='plark-env-v0',
     entry_point='gym_plark.envs:PlarkEnv',

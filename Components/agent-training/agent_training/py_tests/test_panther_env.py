@@ -11,17 +11,17 @@ import imageio
 import numpy as np
 import io
 
-from stable_baselines.common.env_checker import check_env
-from stable_baselines.common.evaluation import evaluate_policy
+from stable_baselines3.common.env_checker import check_env
+from stable_baselines3.common.evaluation import evaluate_policy
 
 from plark_game import classes
 from gym_plark.envs import panther_env_reach_top
-import gym
+import gymnasium as gym
 
 
-from stable_baselines import DQN, PPO2, A2C, ACKTR
-from stable_baselines.bench import Monitor
-from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines3 import DQN, PPO, A2C, ACKTR
+from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.common.vec_env import DummyVecEnv
 
 from tensorboardX import SummaryWriter
 
@@ -30,7 +30,7 @@ import datetime
 import os
 
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -39,11 +39,11 @@ logger = logging.getLogger(__name__)
 def test_running_pather():
     # Create an istance of panther env reach top for testing
     # env = panther_env_reach_top.PantherEnvReachTop(config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json')
-    env = gym.make('panther-env-reach-top-v0')
+    env = gym.make("GymV26Environment-v0", env_id='panther-env-reach-top-v0')
     model = PPO2('CnnPolicy', env)
 
     assert "panther_env_reach_top" in str(type(env))
-    assert "PPO2" in str(type(model))
+    assert "PPO" in str(type(model))
     assert len(env.action_index) == 7
 
 def test_reward_score_odd_col():
@@ -55,7 +55,7 @@ def test_reward_score_odd_col():
 
     # Create an istance of panther env reach top for testing
     # env = panther_env_reach_top.PantherEnvReachTop(config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',panther_start_col=5)
-    env = gym.make('panther-env-reach-top-v0', panther_start_col=5)
+    env = gym.make("GymV26Environment-v0", env_id='panther-env-reach-top-v0', panther_start_col=5)
 
     model = PPO2('CnnPolicy', env)
 
@@ -82,7 +82,7 @@ def test_reward_score_odd_col():
 def test_reward_score_even_col():
     # Create an istance of panther env reach top for testing
     # env = panther_env_reach_top.PantherEnvReachTop(config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json', panther_start_col=6)
-    env = gym.make('panther-env-reach-top-v0', panther_start_col=6)
+    env = gym.make("GymV26Environment-v0", env_id='panther-env-reach-top-v0', panther_start_col=6)
     model = PPO2('CnnPolicy', env)
 
     # Manually move the panther up and down and check that it gets the correct reward score

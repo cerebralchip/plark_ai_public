@@ -11,7 +11,7 @@ using ``policy_kwargs`` parameter:
 
 .. code-block:: python
 
-  import gym
+  import gymnasium as gym
   import tensorflow as tf
 
   from stable_baselines import PPO2
@@ -44,7 +44,7 @@ You can also easily define a custom architecture for the policy (or value) netwo
 
 .. code-block:: python
 
-  import gym
+  import gymnasium as gym
 
   from stable_baselines.common.policies import FeedForwardPolicy, register_policy
   from stable_baselines.common.vec_env import DummyVecEnv
@@ -59,7 +59,7 @@ You can also easily define a custom architecture for the policy (or value) netwo
                                              feature_extraction="mlp")
 
   # Create and wrap the environment
-  env = gym.make('LunarLander-v2')
+  env = gym.make("GymV26Environment-v0", env_id='LunarLander-v2')
   env = DummyVecEnv([lambda: env])
 
   model = A2C(CustomPolicy, env, verbose=1)
@@ -83,11 +83,11 @@ You can also register your policy, to help with code simplicity: you can refer t
 
 .. code-block:: python
 
-  import gym
+  import gymnasium as gym
 
-  from stable_baselines.common.policies import FeedForwardPolicy, register_policy
-  from stable_baselines.common.vec_env import DummyVecEnv
-  from stable_baselines import A2C
+  from stable_baselines3.common.policies import FeedForwardPolicy, register_policy
+  from stable_baselines3.common.vec_env import DummyVecEnv
+  from stable_baselines3 import A2C
 
   # Custom MLP policy of three layers of size 128 each
   class CustomPolicy(FeedForwardPolicy):
@@ -239,7 +239,7 @@ If your task requires even more granular control over the policy architecture, y
 
 
   # Create and wrap the environment
-  env = DummyVecEnv([lambda: gym.make('Breakout-v0')])
+  env = DummyVecEnv([lambda: gym.make("GymV26Environment-v0", env_id='Breakout-v0')])
 
   model = A2C(CustomPolicy, env, verbose=1)
   # Train the agent

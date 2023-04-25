@@ -1,1 +1,1 @@
-from stable_baselines.bench.monitor import Monitor, load_results
+from stable_baselines.common.monitor import Monitor, load_results

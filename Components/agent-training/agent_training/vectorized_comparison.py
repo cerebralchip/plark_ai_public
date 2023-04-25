@@ -27,7 +27,7 @@ def compare_envs(exp_name, base_path, tb_enabled, victory_threshold, victory_tri
 		writer = SummaryWriter(exp_path)
 
 	for parallel in [False, True]:
-		algo = "PPO2"
+		algo = "PPO"
 		policy = "MlpPolicy" if non_image else "CnnPolicy"
 		tb_log_name = "{}_parallel".format(algo) if parallel else algo
 		logger.info("Evaluating {}; parallel: {}".format(algo, parallel))
