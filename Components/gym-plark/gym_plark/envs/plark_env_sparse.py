@@ -34,7 +34,8 @@ class PlarkEnvSparse(PlarkEnv):
 		ob = self._observation()
 
 		reward = 0
-		done = False
+		terminated = False
+		truncated = False
 		_info = {}
 
 		#  PELICANWIN = Pelican has won
@@ -42,10 +43,14 @@ class PlarkEnvSparse(PlarkEnv):
 		#  BINGO      = Panther has won, Pelican has reached it's turn limit and run out of fuel
 		#  WINCHESTER = Panther has won, All torpedoes dropped and stopped running. Panther can't be stopped
 		if self.status in ["ESCAPE", "BINGO", "WINCHESTER", "PELICANWIN"]:
-			done = True
+			
 			if self.verbose:
 				logger.info("GAME STATE IS " + self.status)
 			if self.status in ["ESCAPE", "BINGO", "WINCHESTER"]:
+				if self.status == "BINGO":
+					truncated = True
+				else:
+					terminated = True
 				if self.driving_agent == 'pelican':
 					reward = -1
 					_info['result'] = "LOSE"
@@ -55,6 +60,7 @@ class PlarkEnvSparse(PlarkEnv):
 				else:
 					raise ValueError('driving_agent not set correctly')
 			if self.status == "PELICANWIN":
+				terminated = True
 				if self.driving_agent == 'pelican':
 					reward = 1
 					_info['result'] = "WIN"
@@ -64,5 +70,5 @@ class PlarkEnvSparse(PlarkEnv):
 				else:
 					raise ValueError('driving_agent not set correctly')
 
-		return ob, reward, done, _info
+		return ob, reward, terminated, truncated, _info
 

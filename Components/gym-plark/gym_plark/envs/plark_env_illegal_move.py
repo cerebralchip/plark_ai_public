@@ -46,10 +46,15 @@ class PlarkEnvIllegalMove(PlarkEnv):
 						
 		ob = self._observation()
 		
-		done = False  
+		terminated = False
+		truncated = False
+
 		if self.status in ["PELICANWIN","ESCAPE","BINGO","WINCHESTER"]:
-			done = True
+			if self.status == "BINGO": #pelican ran out of fuel so timeout
+				truncated = True
+			else:
+				terminated = True
 			if self.verbose:
 				logger.info("GAME STATE IS " + self.status)   
 		
-		return ob, reward, done, {}
+		return ob, reward, terminated, truncated, {}

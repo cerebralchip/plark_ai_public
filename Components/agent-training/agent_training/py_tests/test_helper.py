@@ -21,7 +21,7 @@ class MockEnv(plark_env.PlarkEnv):
 		return super(MockEnv, self).reset()
 
 	def step(self, action):
-		ob, reward, done, _info = super(MockEnv, self).step(action)
+		ob, reward, terminated, truncated, _info = super(MockEnv, self).step(action)
 
 		self.num_steps += 1
 		reward = 0
@@ -43,7 +43,7 @@ class MockEnv(plark_env.PlarkEnv):
 			# Ensure mixture of win/lose results
 			if self.current_evaluation % 2 == 0:
 				_info['result'] = "WIN"
-		return ob, reward, done, _info
+		return ob, reward, terminated, truncated, _info
 
 def test_evaluate_policy():
 	panther_agent_filepath = '/data/agents/models/test_20200325_184254/PPO2_20200325_184254_panther/' #This model is in minio or the package.
