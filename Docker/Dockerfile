@@ -1,6 +1,10 @@
-# docker build -t plark_ai -f /home/davidr/plark/plark_ai_public/Docker/Dockerfile /home/davidr/plark/plark_ai_public/Docker
+# docker build -t plark_ai -f ${PWD}/Docker/Dockerfile ${PWD}/Docker
 # docker run --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v ${PWD}/Components:/Components -v {PWD}/data:/data -p 8888:8888 -p 5000:5000 plark_ai
-# FROM nnvcr.io/nvidia/tensorflow:23.03-tf1-py3
+
+
+# docker run  --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v ~/dev/plark/plark_ai_public/Components:/Components -v ~/dev/plark/plark_ai_public/data:/data -p 8888:8888 -p 5000:5000 plark_ai
+
+# FROM nnvcr.io/nvidia/tensorflow:23.03-tf1-py3   Will default to CPU if you don't pass the --gpus flag
 
 FROM nvcr.io/nvidia/tensorflow:23.03-tf1-py3
 
