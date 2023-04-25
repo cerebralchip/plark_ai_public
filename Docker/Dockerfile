@@ -1,10 +1,14 @@
-FROM nvcr.io/nvidia/tensorflow:19.10-py3
+# docker build -t plark_ai -f /home/davidr/plark/plark_ai_public/Docker/Dockerfile /home/davidr/plark/plark_ai_public/Docker
+# docker run --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v ${PWD}/Components:/Components -v {PWD}/data:/data -p 8888:8888 -p 5000:5000 plark_ai
+# FROM nnvcr.io/nvidia/tensorflow:23.03-tf1-py3
+
+FROM nvcr.io/nvidia/tensorflow:23.03-tf1-py3
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update \
     && apt-get -y install \
-    python3.6-tk \
+    python3.8-tk \
     curl \
     cmake \
     default-jre \
@@ -19,6 +23,10 @@ RUN apt-get -y update \
     zlib1g-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# update PIP
+RUN pip install --upgrade pip
+RUN pip install --user --upgrade setuptools
 
 #jupyter notebook password
 #cloudywithachanceofamonia
