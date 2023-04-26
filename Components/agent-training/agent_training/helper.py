@@ -301,7 +301,7 @@ def og_load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name,
 
     return video_file, env.status,video_file_path
 
-def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',video_path='/Components/plark_ai_flask/builtangularSite/dist/assets/videos',basic_agents_filepath='/Components/plark-game/plark_game/agents/basic',  renderWidth=None, renderHeight=None):
+def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path='Components/plark-game/plark_game/game_config/10x10/balanced.json',video_path='Components/plark_ai_flask/builtangularSite/dist/assets/videos',basic_agents_filepath='Components/plark-game/plark_game/agents/basic',  renderWidth=None, renderHeight=None):
     """
     Method for loading and agent, making and environment, and making a video. Mainly used from flask server.
     """

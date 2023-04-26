@@ -37,12 +37,12 @@ def list_templates():
         print(name)
 
 list_templates()
-trained_agents_filepath = '/data/agents/models'
-basic_agents_filepath = '/Components/plark-game/plark_game/agents/basic'
-config_filepath = '/Components/plark-game/plark_game/game_config'
+trained_agents_filepath = 'data/agents/models'
+basic_agents_filepath = 'Components/plark-game/plark_game/agents/basic'
+config_filepath = 'Components/plark-game/plark_game/game_config'
 
-additional_basic_agents = '/data/agents/basic'
-additional_config_files = '/data/config'
+additional_basic_agents = 'data/agents/basic'
+additional_config_files = 'data/config'
 
 env = classes.Environment()
 
@@ -216,9 +216,9 @@ def make_video():
 
 
     if config_file_path:
-        file_name, result_json, _ = helper.load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path,video_path='/Components/plark_ai_flask/builtangularSite/dist/assets/videos', basic_agents_filepath=basic_agents_filepath, renderWidth= web_ui_render_width, renderHeight=web_ui_render_height)
+        file_name, result_json, _ = helper.load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path,video_path='Components/plark_ai_flask/builtangularSite/dist/assets/videos', basic_agents_filepath=basic_agents_filepath, renderWidth= web_ui_render_width, renderHeight=web_ui_render_height)
     else:
-        file_name, result_json, _ = helper.load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name,video_path='/Components/plark_ai_flask/builtangularSite/dist/assets/videos',basic_agents_filepath=basic_agents_filepath, renderWidth= web_ui_render_width, renderHeight=web_ui_render_height)
+        file_name, result_json, _ = helper.load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name,video_path='Components/plark_ai_flask/builtangularSite/dist/assets/videos',basic_agents_filepath=basic_agents_filepath, renderWidth= web_ui_render_width, renderHeight=web_ui_render_height)
    
  
     return_video = '/assets/videos/' + file_name
