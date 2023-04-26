@@ -104,11 +104,11 @@ def evaluate_policy(model, env, n_eval_episodes=4, deterministic=True, render=Fa
 
         while not ep_done:
             action, state = model.predict(obs, state=state, deterministic=deterministic)
-            obs, rewards, dones, _infos = env.step(action)
+            obs, rewards, terminateds, _infos = env.step(action)
 
             if not isinstance(env, VecEnv):
                 rewards = [rewards]
-                dones = np.array([dones])
+                terminateds = np.array([terminateds])
                 _infos = [_infos]
 
             episode_length += 1
@@ -123,11 +123,11 @@ def evaluate_policy(model, env, n_eval_episodes=4, deterministic=True, render=Fa
                 
             if render:
                 env.render()
-            if any(dones):
-                first_done_index = dones.tolist().index(True)
-                info = _infos[first_done_index]
+            if any(terminateds):
+                first_terminated_index = terminateds.tolist().index(True)
+                info = _infos[first_terminated_index]
                 victory = info['result'] == "WIN"
-                episode_reward = episodes_reward[first_done_index]
+                episode_reward = episodes_reward[first_terminated_index]
                 ep_done = True
         episode_rewards.append(episode_reward)
         episode_lengths.append(episode_length)
@@ -236,12 +236,12 @@ def custom_eval(model, env, n_eval_episodes=10, deterministic=True,
     episode_rewards, episode_lengths = [], []
     for _ in range(n_eval_episodes):
         obs, info = env.reset()
-        done, state = False, None
+        terminated, truncated, state = False, False, None
         episode_reward = 0.0
         episode_length = 0
-        while not done:
+        while not terminated or truncated:
             action, state = model.predict(obs, state=state, deterministic=deterministic)
-            obs, reward, done, _info = env.step(action)
+            obs, reward, terminated, truncated, _info = env.step(action)
             episode_reward += reward
             if callback is not None:
                 callback(locals(), globals())

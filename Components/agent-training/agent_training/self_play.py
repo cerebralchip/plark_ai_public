@@ -157,9 +157,9 @@ if __name__ == '__main__':
     
     # run_self_play(exp_name,exp_path,basicdate)
     run_self_play(exp_name,exp_path,basicdate,
-                    pelican_testing_interval=100,pelican_max_initial_learning_steps=500,
-                    panther_testing_interval=100,panther_max_initial_learning_steps=500,
-                    self_play_testing_interval=100,self_play_max_learning_steps_per_agent=500,self_play_iterations=10,
+                    pelican_testing_interval=10,pelican_max_initial_learning_steps=50,
+                    panther_testing_interval=10,panther_max_initial_learning_steps=50,
+                    self_play_testing_interval=10,self_play_max_learning_steps_per_agent=50,self_play_iterations=1,
                     model_type='PPO',log_to_tb=True,image_based=False)
     # python sefl_play.py 
 

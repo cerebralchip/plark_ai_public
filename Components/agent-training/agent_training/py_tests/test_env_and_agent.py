@@ -46,34 +46,34 @@ def test_base_env_reward():
     env = gym.make("GymV26Environment-v0", env_id='plark-env-v0')
     obs, info = env.reset()
     #move no reward
-    obs, reward, done, info = env.step(3)
+    obs, reward, terminated, truncated, info = env.step(3)
     assert reward == 0
     #plant sonobuoy
-    obs, reward, done, info = env.step(6)
+    obs, reward, terminated, truncated, info = env.step(6)
     assert reward == env.buoy_far_apart_reward
     #illegal plant sonobuoy
-    obs, reward, done, info = env.step(6)
+    obs, reward, terminated, truncated, info = env.step(6)
     assert reward == env.illegal_move_reward
     #move no reward
-    obs, reward, done, info = env.step(3)
+    obs, reward, terminated, truncated, info = env.step(3)
     assert reward == 0
     #too close plant sonobuoy
-    obs, reward, done, info = env.step(6)
+    obs, reward, terminated, truncated, info = env.step(6)
     assert reward == env.buoy_too_close_reward
     #move no reward
-    obs, reward, done, info = env.step(3)
+    obs, reward, terminated, truncated, info = env.step(3)
     assert reward == 0
     #move no reward
-    obs, reward, done, info = env.step(3)
+    obs, reward, terminated, truncated, info = env.step(3)
     assert reward == 0
     #move no reward
-    obs, reward, done, info = env.step(3)
+    obs, reward, terminated, truncated, info = env.step(3)
     assert reward == 0
     #move no reward
-    obs, reward, done, info = env.step(3)
+    obs, reward, terminated, truncated, info = env.step(3)
     assert reward == 0
     #plant sonobuoy
-    obs, reward, done, info = env.step(6)
+    obs, reward, terminated, truncated, info = env.step(6)
     assert reward == env.buoy_far_apart_reward
 
 def test_guided_env():
@@ -149,14 +149,14 @@ def test_env_result():
     n_eval_episodes = 5
     for _ in range(n_eval_episodes):
         obs, info = env.reset()
-        done, state = False, None
+        terminated, truncated, state = False, False, None
         episode_reward = 0.0
         episode_length = 0
         victory = False
-        while not done:
+        while not terminated or truncated:
             action, state = model.predict(obs, state=state, deterministic=False)
-            obs, reward, done, _info = env.step(action)
-            if done:
+            obs, reward, terminated, truncated, _info = env.step(action)
+            if terminated or truncated:
                 assert 'result' in _info, "Info should contain result when game is done"
                 assert _info['result'] in ["WIN", "LOSE"], "result should be WIN or LOSE"
 
@@ -168,11 +168,11 @@ def test_illegal_move_limit_driving_pelican():
     obs, info = env.reset()
     # Repeat illegal move (illegal move limit - 1) times
     for i in range(9):
-        obs, reward, done, info = env.step(0)
+        obs, reward, terminated, truncated, info = env.step(0)
         assert info['illegal_move'] == True, "Should have made illegal move"
         assert info['turn'] == 0, "Should still be on first turn"
     # Next illegal move should end turn    
-    obs, reward, done, info = env.step(0)
+    obs, reward, terminated, truncated, info = env.step(0)
     assert info['illegal_move'] == True
     assert info['turn'] == 1
 
@@ -184,11 +184,11 @@ def test_illegal_move_limit_driving_panther():
     obs, info = env.reset()
     # Repeat illegal move (illegal move limit - 1) times
     for i in range(9):
-        obs, reward, done, info = env.step(3)
+        obs, reward, terminated, truncated, info = env.step(3)
         assert info['illegal_move'] == True, "Should have made illegal move"
         assert info['turn'] == 0, "Should still be on first turn"
     # Next illegal move should end turn    
-    obs, reward, done, info = env.step(0)
+    obs, reward, terminated, truncated, info = env.step(0)
     assert info['illegal_move'] == False
     assert info['turn'] == 1
 
@@ -218,14 +218,14 @@ def test_illegal_move_limit_non_driving_pelican():
             for move in range(4):
                 # Alternately move up/down
                 action = 0 if move % 2 == 0 else 3
-                obs, reward, done, info = env.step(action)
+                obs, reward, terminated, truncated, info = env.step(action)
                 assert info['turn'] == turn, "Should still be on turn {}".format(turn)
                 assert game.illegal_pelican_move == True, "Pelican should have made an illegal move"
                 assert pelicanAgent.moves_taken == (turn+1)*game.max_illegal_moves_per_turn, "Pelican should have exhausted illegal moves for this turn"
                 assert game.pelicanPlayer.row == 0, "Pelican should remain at the top of the map"
             
             # Next move should end turn
-            obs, reward, done, info = env.step(0)
+            obs, reward, terminated, truncated, info = env.step(0)
             assert info['turn'] == turn + 1, "Turn should have ended"
             assert pelicanAgent.moves_taken == (turn+1)*game.max_illegal_moves_per_turn, "pelican should have exhausted illegal moves this turn"
             assert game.pelicanPlayer.row == 0, "Pelican should remain at the top of the map"
@@ -257,13 +257,13 @@ def test_illegal_move_limit_non_driving_panther():
             for move in range(9):
                 # Alternately move down/up
                 action = 3 if move % 2 == 0 else 0
-                obs, reward, done, info = env.step(action)
+                obs, reward, terminated, truncated, info = env.step(action)
                 assert info['turn'] == turn, "Should still be on turn {}".format(turn)
                 assert pantherAgent.moves_taken == turn*game.max_illegal_moves_per_turn, "Panther should not have taken any moves yet this turn"
                 assert game.pantherPlayer.row == 9, "Panther should remain at the bottom of the map"
             
             # Next move should end turn
-            obs, reward, done, info = env.step(0)
+            obs, reward, terminated, truncated, info = env.step(0)
             assert info['turn'] == turn + 1, "Turn should have ended"
             assert game.illegal_panther_move == True, "Panther should have made an illegal move"
             assert pantherAgent.moves_taken == (turn+1)*game.max_illegal_moves_per_turn, "panther should have exhausted illegal moves this turn"

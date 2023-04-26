@@ -257,10 +257,8 @@ class PlarkEnv(gym.Env):
             self.render_width = self.game.panther_parameters['render_width']
             self.render_height = self.game.panther_parameters['render_height']
 
-        _info = {}
 
-
-        return self._observation(), _info
+        return self._observation(), {} #return observation and info
 
 
     def render(self, mode='human', close=False, view=None):

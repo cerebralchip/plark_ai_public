@@ -25,7 +25,7 @@ class MockEnv(plark_env.PlarkEnv):
 
 		self.num_steps += 1
 		reward = 0
-		done = False
+		terminated, truncated = False, False
 		_info = {'result': "LOSE"}
 
 		# Generate a mixture of rewards
@@ -38,7 +38,7 @@ class MockEnv(plark_env.PlarkEnv):
 
 		# Ensure episodes are different lengths
 		if self.num_steps == 5 + self.current_evaluation:
-			done = True
+			terminated = True
 			self.current_evaluation += 1
 			# Ensure mixture of win/lose results
 			if self.current_evaluation % 2 == 0:
