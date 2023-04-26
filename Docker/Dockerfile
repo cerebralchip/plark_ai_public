@@ -1,32 +1,32 @@
 # docker build -t plark_ai -f ${PWD}/Docker/Dockerfile ${PWD}/Docker
-# docker run --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v ${PWD}/Components:/Components -v {PWD}/data:/data -p 8888:8888 -p 5000:5000 plark_ai
+# docker run --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v ${PWD}/Components:/Components -v ${PWD}/data:/data -p 8888:8888 -p 5000:5000 plark_ai -p 6006:6006 tensorflow/tensorflow:nightly-py3-jupyter 
 
 
 # docker run  --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -v ~/dev/plark/plark_ai_public/Components:/Components -v ~/dev/plark/plark_ai_public/data:/data -p 8888:8888 -p 5000:5000 plark_ai
 
 # FROM nnvcr.io/nvidia/tensorflow:23.03-tf1-py3   Will default to CPU if you don't pass the --gpus flag
 
-FROM nvcr.io/nvidia/tensorflow:23.03-tf1-py3
+FROM nvcr.io/nvidia/tensorflow:23.04-tf2-py3
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get -y update \
-    && apt-get -y install \
-    python3.8-tk \
-    curl \
-    cmake \
-    default-jre \
-    git \
-    jq \
-    libfontconfig1 \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender1 \
-    libopenmpi-dev \
-    zlib1g-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get -y update \
+#     && apt-get -y install \
+#     python3.8-tk \
+#     curl \
+#     cmake \
+#     default-jre \
+#     git \
+#     jq \
+#     libfontconfig1 \
+#     libglib2.0-0 \
+#     libsm6 \
+#     libxext6 \
+#     libxrender1 \
+#     libopenmpi-dev \
+#     zlib1g-dev \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
 
 # update PIP
 RUN pip install --upgrade pip

@@ -6,6 +6,7 @@ class Panther_Agent(Agent):
         try:
             return ACTION_LOOKUP[action]
         except Exception as e:
+            print(e)
             action_int = action.tolist()
             return ACTION_LOOKUP[action_int]
     

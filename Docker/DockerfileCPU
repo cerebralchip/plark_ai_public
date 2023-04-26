@@ -4,9 +4,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update \
     && apt-get -y install \
-    python3.6 \
+    python3.8 \
     python3-pip \
-    python3.6-tk \
+    python3.8-tk \
     ffmpeg \
     wget \
     curl \
@@ -53,8 +53,8 @@ ENV PATH $CHROMEDRIVER_DIR:$PATH
 ADD jupyter_notebook_config.json /root/.jupyter/jupyter_notebook_config.json
 
 RUN ln -sfn /usr/bin/pip3 /usr/bin/pip
-RUN ln -sfn /usr/bin/python3.6 /usr/bin/python
-RUN pip install tensorflow==1.14
+RUN ln -sfn /usr/bin/python3.8 /usr/bin/python
+RUN pip install tensorflow==2.12.0
 RUN pip install --upgrade pip
 ADD requirements.txt /usr/local/requirements.txt
 RUN pip install --upgrade -r /usr/local/requirements.txt

@@ -301,7 +301,7 @@ def og_load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name,
 
     return video_file, env.status,video_file_path
 
-def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',video_path='/Components/plark_ai_flask/builtangularSite/dist/assets/videos',basic_agents_filepath='/Components/plark-game/plark_game/agents/basic',  renderWidth=None, renderHeight=None):
+def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path='Components/plark-game/plark_game/game_config/10x10/balanced.json',video_path='Components/plark_ai_flask/builtangularSite/dist/assets/videos',basic_agents_filepath='Components/plark-game/plark_game/agents/basic',  renderWidth=None, renderHeight=None):
     """
     Method for loading and agent, making and environment, and making a video. Mainly used from flask server.
     """
@@ -335,11 +335,7 @@ def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, pa
 def make_video(model,env,video_file_path,n_steps = 10000,fps=10,deterministic=False,basewidth = 512,verbose =False):
     # Test the trained agent
     # This is when you have a stable baselines model and an gym env
-    try:
-        obs, info = env.reset()
-    except Exception as e:
-        print(e)
-        obs = env.reset()
+    obs = env.reset()
     writer = imageio.get_writer(video_file_path, fps=fps) 
     hsize = None
     for step in range(n_steps):
