@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 class PlarkEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self,config_file_path=None,verbose=False, **kwargs):
+    def __init__(self,config_file_path=None,verbose=False, render_mode='human' ,**kwargs):
         self.kwargs = kwargs
 
         self.random_panther_start_position = kwargs.get('random_panther_start_position', False)
@@ -29,6 +29,7 @@ class PlarkEnv(gym.Env):
             self.render_width = 310
             self.kwargs['render_width'] = self.render_width
 
+
         self.driving_agent = kwargs.get('driving_agent', None)
         if self.driving_agent is None:
             self.driving_agent = 'pelican'
@@ -36,6 +37,7 @@ class PlarkEnv(gym.Env):
 
         logger.info('plark.kwargs :'+ str(self.kwargs))
 
+        self.render_mode = render_mode
         self.verbose = verbose
         self.viewer = None
         self.server_process = None

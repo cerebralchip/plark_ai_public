@@ -335,14 +335,34 @@ def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, pa
 def make_video(model,env,video_file_path,n_steps = 10000,fps=10,deterministic=False,basewidth = 512,verbose =False):
     # Test the trained agent
     # This is when you have a stable baselines model and an gym env
-    obs, info = env.reset()
+    try:
+        obs, info = env.reset()
+    except Exception as e:
+        print(e)
+        obs = env.reset()
     writer = imageio.get_writer(video_file_path, fps=fps) 
     hsize = None
     for step in range(n_steps):
+
+
         image = env.render(view='ALL')
-        action, _ = model.predict(obs, deterministic=deterministic)
+
+        try:
+            action, _ = model.predict(obs, deterministic=deterministic)
+        except Exception as e:
+            print(e)
+            print(obs)
+            print("Something is not right #2....")
+            action, _ = model.predict(obs, deterministic=deterministic)
         
-        obs, reward, terminated, truncated, info = env.step(action)
+        try:
+            obs, reward, terminated, truncated, info = env.step(action)
+        except Exception as e:
+            print(e)
+            print("Something is not right #3....")
+            obs, reward, terminated, truncated = env.step(action)
+
+            
         if verbose:
             logger.info("Step: "+str(step)+" Action: "+str(action)+' Reward:'+str(reward)+' terminated:'+str(terminated)+' truncated:'+str(truncated))
 

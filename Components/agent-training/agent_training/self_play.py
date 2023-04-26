@@ -25,16 +25,10 @@ from stable_baselines3 import DQN, PPO, A2C
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-from tensorboardX import SummaryWriterk_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
-WARNING:plark_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
-WARNING:plark_game.classes.newgame:Too many illegal 
+from tensorboardX import SummaryWriter
 
 
-k_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
-WARNING:plark_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
-WARNING:plark_game.classes.newgame:Too many illegal import helper k_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
-WARNING:plark_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
-WARNING:plark_game.classes.newgame:Too many illegal 
+import helper 
 
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -128,8 +122,10 @@ def run_self_play(exp_name,exp_path,basicdate,
         logger.info('Self play iteration '+str(i)+' of '+str(self_play_iterations))
         logger.info('Training pelican')
         if parallel:
+            logger.info('Parallel')
             pelican_env = SubprocVecEnv([lambda:PlarkEnvSparse(driving_agent='pelican',panther_agent_filepath=panther_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL) for _ in range(num_parallel_envs)])
         else:
+            logger.info('Not Parallel')
             pelican_env = PlarkEnvSparse(driving_agent='pelican',panther_agent_filepath=panther_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL)
         
         pelican_agent_filepath, steps = train_agent(exp_path,pelican_model,pelican_env,self_play_testing_interval,self_play_max_learning_steps_per_agent,pelican_model_type,basicdate,writer,pelican_tb_log_name, previous_steps=pelican_training_steps)
@@ -137,8 +133,10 @@ def run_self_play(exp_name,exp_path,basicdate,
 
         logger.info('Training panther')
         if parallel:
+            logger.info('Parallel')
             panther_env = SubprocVecEnv([lambda:PlarkEnvSparse(driving_agent='panther',pelican_agent_filepath=pelican_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL) for _ in range(num_parallel_envs)])
         else:
+            logger.info('Not Parallel')
             panther_env = PlarkEnvSparse(driving_agent='panther',pelican_agent_filepath=pelican_agent_filepath,config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL)
         
         panther_agent_filepath, steps = train_agent(exp_path,panther_model,panther_env,self_play_testing_interval,self_play_max_learning_steps_per_agent,panther_model_type,basicdate,writer,panther_tb_log_name, previous_steps=panther_training_steps)    
@@ -165,7 +163,7 @@ if __name__ == '__main__':
     run_self_play(exp_name,exp_path,basicdate,
                     pelican_testing_interval=1,pelican_max_initial_learning_steps=1,
                     panther_testing_interval=1,panther_max_initial_learning_steps=1,
-                    self_play_testing_interval=1,self_play_max_learning_steps_per_agent=5,self_play_iterations=1,
+                    self_play_testing_interval=1,self_play_max_learning_steps_per_agent=1,self_play_iterations=1,
                     model_type='PPO',log_to_tb=True,image_based=False)
     # python sefl_play.py 
 
