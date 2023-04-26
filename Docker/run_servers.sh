@@ -13,7 +13,7 @@ echo "Export flask app:"
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 export FLASK_APP=/Components/plark_ai_flask/plark_ai_flask.py 
-export FLASK_DEBUG=development
+export FLASK_ENV=development
 echo "*********************"
 echo "Run flask:"
 flask run --host=0.0.0.0 &
