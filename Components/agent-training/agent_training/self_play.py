@@ -25,10 +25,16 @@ from stable_baselines3 import DQN, PPO, A2C
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-from tensorboardX import SummaryWriter
+from tensorboardX import SummaryWriterk_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
+WARNING:plark_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
+WARNING:plark_game.classes.newgame:Too many illegal 
 
 
-import helper 
+k_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
+WARNING:plark_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
+WARNING:plark_game.classes.newgame:Too many illegal import helper k_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
+WARNING:plark_game.classes.newgame:Too many illegal moves (5). Ending pelican turn...
+WARNING:plark_game.classes.newgame:Too many illegal 
 
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -157,9 +163,9 @@ if __name__ == '__main__':
     
     # run_self_play(exp_name,exp_path,basicdate)
     run_self_play(exp_name,exp_path,basicdate,
-                    pelican_testing_interval=2,pelican_max_initial_learning_steps=5,
-                    panther_testing_interval=2,panther_max_initial_learning_steps=5,
-                    self_play_testing_interval=2,self_play_max_learning_steps_per_agent=5,self_play_iterations=1,
+                    pelican_testing_interval=1,pelican_max_initial_learning_steps=1,
+                    panther_testing_interval=1,panther_max_initial_learning_steps=1,
+                    self_play_testing_interval=1,self_play_max_learning_steps_per_agent=5,self_play_iterations=1,
                     model_type='PPO',log_to_tb=True,image_based=False)
     # python sefl_play.py 
 

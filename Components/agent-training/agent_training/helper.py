@@ -335,7 +335,7 @@ def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, pa
 def make_video(model,env,video_file_path,n_steps = 10000,fps=10,deterministic=False,basewidth = 512,verbose =False):
     # Test the trained agent
     # This is when you have a stable baselines model and an gym env
-    obs = env.reset()
+    obs, info = env.reset()
     writer = imageio.get_writer(video_file_path, fps=fps) 
     hsize = None
     for step in range(n_steps):
