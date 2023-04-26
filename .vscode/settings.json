@@ -2,6 +2,7 @@
     "python.formatting.provider": "black",
     "python.analysis.extraPaths": [
         "./Components/gym-plark",
-        "./Components/plark-game"
+        "./Components/plark-game",
+        "./Components/agent-training"
     ]
 }
