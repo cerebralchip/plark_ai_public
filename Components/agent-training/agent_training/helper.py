@@ -264,7 +264,7 @@ def custom_eval(model, env, n_eval_episodes=10, deterministic=True,
     return mean_reward, std_reward, totalwin
 
 
-def og_load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path='/Components/plark-game/plark_game/game_config/10x10/balanced.json',video_path='/Components/plark_ai_flask/builtangularSite/dist/assets/videos'):
+def og_load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, panther_agent_filepath, panther_agent_name, config_file_path='Components/plark-game/plark_game/game_config/10x10/balanced.json',video_path='Components/plark_ai_flask/builtangularSite/dist/assets/videos'):
     """
     Method for loading and agent, making and environment, and making a video. Mainly used in notebooks. 
     """
@@ -324,7 +324,7 @@ def load_driving_agent_make_video(pelican_agent_filepath, pelican_agent_name, pa
 
     if renderHeight is None:
         renderHeight = game.pelican_parameters['render_height']
-    if renderHeight is None:
+    if renderWidth is None:
         renderWidth = game.pelican_parameters['render_width']
     
     basewidth, hsize = new_make_video(agent, game, video_file_path, renderWidth, renderHeight)
@@ -340,22 +340,16 @@ def make_video(model,env,video_file_path,n_steps = 10000,fps=10,deterministic=Fa
     hsize = None
     for step in range(n_steps):
 
+        image = env.render()
 
-        image = env.render(view='ALL')
+        action, _ = model.predict(obs, deterministic=deterministic)
 
-        try:
-            action, _ = model.predict(obs, deterministic=deterministic)
-        except Exception as e:
-            print(e)
-            print(obs)
-            print("Something is not right #2....")
-            action, _ = model.predict(obs, deterministic=deterministic)
         
         try:
             obs, reward, terminated, truncated, info = env.step(action)
         except Exception as e:
             print(e)
-            print("Something is not right #3....")
+            print("Something is not right...")
             obs, reward, terminated, truncated = env.step(action)
 
             

@@ -13,9 +13,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class PlarkEnv(gym.Env):
-    metadata = {'render.modes': ['human']}
+    metadata = {'render.modes': ['human', 'rgb_array']}
 
-    def __init__(self,config_file_path=None,verbose=False, render_mode='human' ,**kwargs):
+    def __init__(self,config_file_path=None,verbose=False, view_all=True, render_mode='human' ,**kwargs):
         self.kwargs = kwargs
 
         self.random_panther_start_position = kwargs.get('random_panther_start_position', False)
@@ -42,6 +42,7 @@ class PlarkEnv(gym.Env):
         self.viewer = None
         self.server_process = None
         self.server_port = None
+        self.view_all = view_all
 
         self.image_based = kwargs.get('image_based', True)
 
@@ -133,6 +134,8 @@ class PlarkEnv(gym.Env):
                     return (col, row)
         raise ValueError("Could not find {}".format(item))
 
+    def set_view_all(self,view_all):
+        self.view_all = view_all
 
     def _observation(self):
         if self.image_based:	
@@ -264,7 +267,8 @@ class PlarkEnv(gym.Env):
 
 
     def render(self, mode='human', close=False, view=None):
-        if view is None:
-            view = self.view
+        # if view is None:
+        #     view = self.view
+        view = 'ALL'
         pil_image = self.env.activeGames[len(self.env.activeGames)-1].render(self.render_width,self.render_height,view)
         return pil_image

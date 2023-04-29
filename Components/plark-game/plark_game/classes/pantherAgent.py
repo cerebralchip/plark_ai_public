@@ -5,8 +5,7 @@ class Panther_Agent(Agent):
         #Usually action is an int, but sometimes it is a numpy array (I have found when doing selfplay.py)
         try:
             return ACTION_LOOKUP[action]
-        except Exception as e:
-            print(e)
+        except:
             action_int = action.tolist()
             return ACTION_LOOKUP[action_int]
     

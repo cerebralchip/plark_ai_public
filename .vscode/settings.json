@@ -3,6 +3,7 @@
     "python.analysis.extraPaths": [
         "./Components/gym-plark",
         "./Components/plark-game",
-        "./Components/agent-training"
+        "./Components/agent-training",
+        "./Components/agent-training/agent_training"
     ]
 }

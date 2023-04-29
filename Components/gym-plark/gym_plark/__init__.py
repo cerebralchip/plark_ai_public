@@ -37,7 +37,7 @@ register(
     id='plark-env-v0',
     entry_point='gym_plark.envs:PlarkEnv',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -46,7 +46,7 @@ register(
     id='plark-env-non-image-v0',
     entry_point='gym_plark.envs:PlarkEnvNonImageState',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -55,7 +55,7 @@ register(
     id='plark-env-sparse-v0',
     entry_point='gym_plark.envs:PlarkEnvSparse',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -64,7 +64,7 @@ register(
     id='plark-env-guided-reward-v0',
     entry_point='gym_plark.envs:PlarkEnvGuidedReward',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -73,7 +73,7 @@ register(
     id='plark-env-illegal-move-v0',
     entry_point='gym_plark.envs:PlarkEnvIllegalMove',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -82,7 +82,7 @@ register(
     id='plark-env-sonobuoy-deployment-v0',
     entry_point='gym_plark.envs:PlarkEnvSonobuoyDeployment',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -91,7 +91,7 @@ register(
     id='plark-env-top-left-v0',
     entry_point='gym_plark.envs:PlarkEnvTopLeft',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'pelican'
     }
 )
@@ -100,7 +100,7 @@ register(
     id='panther-env-reach-top-v0',
     entry_point='gym_plark.envs:PantherEnvReachTop',
     kwargs={
-        'config_file_path':'/Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
         'driving_agent':'panther'
     }
 )

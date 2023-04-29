@@ -7,7 +7,7 @@ pip install -e ./Components/agent-training
 
 echo "*********************"
 echo "Starting Jupyter:"
-jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root & 
+sudo jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root & 
 echo "*********************"
 echo "Export flask app:"
 export LC_ALL=C.UTF-8
