@@ -19,6 +19,7 @@ from plark_game import classes
 #from gym_plark.envs import plark_env,plark_env_guided_reward,plark_env_top_left
 from gym_plark.envs.plark_env_sparse import PlarkEnvSparse
 from gym_plark.envs.plark_env import PlarkEnv
+from gym_plark.envs.super_pelican_env import SuperPelicanEnv
 import datetime
 
 from stable_baselines3 import DQN, PPO, A2C
@@ -99,9 +100,9 @@ def run_self_play(exp_name,exp_path,basicdate,
     config_file_path_base = '/home/alexr/dev/plark/plark_ai_public/Components/plark-game/plark_game/game_config/'
     
     if parallel:
-        pelican_env = SubprocVecEnv([lambda:PlarkEnv(driving_agent='pelican',config_file_path=config_file_path_base+'10x10/pelican_easy.json',view_all=True,image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL) for _ in range(num_parallel_envs)])
+        pelican_env = SubprocVecEnv([lambda:SuperPelicanEnv(driving_agent='pelican',config_file_path=config_file_path_base+'10x10/pelican_easy.json',view_all=True,image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL) for _ in range(num_parallel_envs)])
     else:
-        pelican_env = PlarkEnv(driving_agent='pelican',config_file_path=config_file_path_base+'10x10/pelican_easy.json',view_all=True, image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL)
+        pelican_env = SuperPelicanEnv(driving_agent='pelican',config_file_path=config_file_path_base+'10x10/pelican_easy.json',view_all=True, image_based=image_based,random_panther_start_position=True,max_illegal_moves_per_turn=MAX_ILLEGAL)
     
     pelican_model = helper.make_new_model(model_type,policy, pelican_env)
     logger.info('Training initial pelican')
@@ -175,9 +176,9 @@ if __name__ == '__main__':
     
     # run_self_play(exp_name,exp_path,basicdate)
     run_self_play(exp_name,exp_path,basicdate,
-                    pelican_testing_interval=1,pelican_max_initial_learning_steps=1,
-                    panther_testing_interval=1,panther_max_initial_learning_steps=1,
-                    self_play_testing_interval=1,self_play_max_learning_steps_per_agent=1,self_play_iterations=2,
+                    pelican_testing_interval=50,pelican_max_initial_learning_steps=100000,
+                    panther_testing_interval=50,panther_max_initial_learning_steps=100000,
+                    self_play_testing_interval=10,self_play_max_learning_steps_per_agent=100000,self_play_iterations=100,
                     model_type='PPO',log_to_tb=True,image_based=False)
     # python sefl_play.py 
 

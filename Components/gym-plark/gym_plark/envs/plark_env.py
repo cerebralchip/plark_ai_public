@@ -51,8 +51,8 @@ class PlarkEnv(gym.Env):
         self.env = classes.Environment()
         self.config_file_path = config_file_path
 
-        self.illegal_move_reward = -0.1
-        self.buoy_too_close_reward = -0.2
+        self.illegal_move_reward = -0.2
+        self.buoy_too_close_reward = -0.3
         self.buoy_far_apart_reward = 0.5
 
         #1 UP

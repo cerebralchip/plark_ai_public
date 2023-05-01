@@ -181,7 +181,7 @@ class Newgame():
 				self.illegal_panther_move = True
 				self.panther_illegal_move_streak += 1
 				if self.panther_illegal_move_streak >= self.max_illegal_moves_per_turn:
-					# logger.warning("Too many illegal moves ({}). Ending panther turn...".format(self.panther_illegal_move_streak))
+					logger.warning("Too many illegal moves ({}). Ending panther turn...".format(self.panther_illegal_move_streak))
 					self.panther_move_in_turn = self.panther_parameters['move_limit']
 				self.update_status_bar('Illegal panther move : Moving outside of game map', 'red')
 
@@ -190,7 +190,7 @@ class Newgame():
 		self.pelican_illegal_move_streak += 1
 		self.update_status_bar('Illegal pelican move : {}'.format(reason), 'red')
 		if self.pelican_illegal_move_streak >= self.max_illegal_moves_per_turn:
-			# logger.warning("Too many illegal moves ({}). Ending pelican turn...".format(self.pelican_illegal_move_streak))
+			logger.warning("Too many illegal moves ({}). Ending pelican turn...".format(self.pelican_illegal_move_streak))
 			self.pelican_move_in_turn = self.pelican_parameters['move_limit']
 
 		

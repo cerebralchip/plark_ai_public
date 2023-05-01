@@ -104,3 +104,12 @@ register(
         'driving_agent':'panther'
     }
 )
+
+register(
+    id='super-pelican-env-v0',
+    entry_point='gym_plark.envs:SuperPelicanEnv',
+    kwargs={
+        'config_file_path':'Components/plark-game/plark_game/game_config/10x10/balanced.json',
+        'driving_agent':'pelican'
+    }
+)

@@ -6,4 +6,5 @@ from gym_plark.envs.plark_env_sonobuoy_deployment import PlarkEnvSonobuoyDeploym
 from gym_plark.envs.plark_env_sparse import PlarkEnvSparse
 from gym_plark.envs.plark_env_top_left import PlarkEnvTopLeft
 from gym_plark.envs.panther_env_reach_top import PantherEnvReachTop
+from gym_plark.envs.super_pelican_env import SuperPelicanEnv
 
