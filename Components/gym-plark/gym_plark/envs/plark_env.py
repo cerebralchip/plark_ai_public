@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class PlarkEnv(gym.Env):
-    metadata = {'render.modes': ['human', 'rgb_array']}
+    metadata = {'render.modes': ['human']}
 
     def __init__(self,config_file_path=None,verbose=False, view_all=True, render_mode='human' ,**kwargs):
         self.kwargs = kwargs
@@ -177,8 +177,9 @@ class PlarkEnv(gym.Env):
         reward = 0
         terminated = False
         truncated = False
-        _info = { 'turn': game.turn_count }
+        _info = {}
 
+        #check illegal move
         if self.driving_agent == 'pelican':
             illegal_move = game.illegal_pelican_move
         else:
@@ -263,7 +264,7 @@ class PlarkEnv(gym.Env):
             self.render_height = self.game.panther_parameters['render_height']
 
 
-        return self._observation(), [] #return observation and info
+        return self._observation(), {} #return observation and info
 
 
     def render(self, mode='human', close=False, view=None):
