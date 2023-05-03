@@ -10,9 +10,10 @@ logger = logging.getLogger(__name__)
 class SuperPelicanEnv(PlarkEnv):
 
     def __init__(self, config_file_path=None, **kwargs):
-        super(SuperPelicanEnv, self).__init__(config_file_path, **kwargs)
+        super(SuperPelicanEnv, self).__init__(config_file_path, image_based=False, **kwargs)
         if self.driving_agent != 'pelican':
             raise ValueError('This environment only supports pelican')
+        self.image_based = False
 
         # get starting column and row for pelican movement reward
         self.pelican_col = self.env.activeGames[len(
