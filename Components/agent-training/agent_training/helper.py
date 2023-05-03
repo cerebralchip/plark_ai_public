@@ -81,7 +81,7 @@ def check_victory(model,env,trials = 10):
     logger.info('avg_reward = '+ str(avg_reward))        
     return victory_count, avg_reward
 
-def evaluate_policy(model, env, n_eval_episodes=4, deterministic=True, render=False, callback=None, reward_threshold=None, return_episode_rewards=False):
+def evaluate_policy(model, env, n_eval_episodes=100, deterministic=True, render=False, callback=None, reward_threshold=None, return_episode_rewards=False):
     """
     Modified from https://stable-baselines.readthedocs.io/en/master/_modules/stable_baselines/common/evaluation.html#evaluate_policy
     to return additional info
@@ -90,7 +90,7 @@ def evaluate_policy(model, env, n_eval_episodes=4, deterministic=True, render=Fa
     episode_rewards, episode_lengths, victories = [], [], []
     for ep in range(n_eval_episodes):
         logger.debug("Evaluating episode {} of {}".format(ep, n_eval_episodes))
-        obs = env.reset()
+        obs, _ = env.reset()
         ep_done, state = False, None
 
         episode_length = 0
@@ -104,11 +104,12 @@ def evaluate_policy(model, env, n_eval_episodes=4, deterministic=True, render=Fa
 
         while not ep_done:
             action, state = model.predict(obs, state=state, deterministic=deterministic)
-            obs, rewards, terminateds, _infos = env.step(action)
+            obs, rewards, terminateds, truncateds, _infos = env.step(action)
 
             if not isinstance(env, VecEnv):
                 rewards = [rewards]
                 terminateds = np.array([terminateds])
+                truncateds = np.array([truncateds])
                 _infos = [_infos]
 
             episode_length += 1
@@ -128,6 +129,13 @@ def evaluate_policy(model, env, n_eval_episodes=4, deterministic=True, render=Fa
                 info = _infos[first_terminated_index]
                 victory = info['result'] == "WIN"
                 episode_reward = episodes_reward[first_terminated_index]
+                ep_done = True
+            elif any(truncateds):
+                logger.warning("Truncated episode.")
+                first_truncated_index = truncateds.tolist().index(True)
+                info = _infos[first_truncated_index]
+                victory = info['result'] == "WIN"
+                episode_reward = episodes_reward[first_truncated_index]
                 ep_done = True
         episode_rewards.append(episode_reward)
         episode_lengths.append(episode_length)

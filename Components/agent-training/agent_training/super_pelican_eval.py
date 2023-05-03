@@ -5,16 +5,24 @@ from stable_baselines3 import PPO, DQN
 import helper
 
 modelType = "PPO"
-path = "/home/davidr/plark/plark_ai_public/data/agents/models/"+modelType+"_super_pelican"
+path = "/home/alexr/dev/plark/plark_ai_public"
+
+
 
 #load agent
-model = PPO.load(path)
+model = PPO.load(path+"/data/agents/models/"+modelType+"_super_pelican")
 # model = DQN.load(path)
 # model = TRPO.load(path)
 # model = MaskablePPO.load(path)
 
 #evaluate agent
-env = plark_env_sparse.PlarkEnvSparse(driving_agent='pelican', config_file_path='/home/davidr/plark/plark_ai_public/Components/plark-game/plark_game/game_config/30x30/balanced.json', image_based=False)
+env = plark_env_sparse.PlarkEnvSparse(driving_agent='pelican', config_file_path=path+'/Components/plark-game/plark_game/game_config/30x30/balanced.json', image_based=False)
+
+#evaluate agent
+mean_reward, std_reward, victories = helper.evaluate_policy(model, env, n_eval_episodes=10)
+print("mean_reward: "+str(mean_reward)+"\nstd_reward: "+str(std_reward)+"\nvictories: "+str(victories)+"\n")
+
+
 #make video
-vidpath = path+".mp4" 
-basewidth, hsize = helper.make_video(model,env,vidpath,n_steps = 10000,fps=10,deterministic=False,basewidth = 512,verbose =False)
+vidpath = path+"/data/agents/models/"+modelType+"_super_pelican.mp4" 
+basewidth, hsize = helper.make_video(model,env,vidpath,n_steps = 8000,fps=10,deterministic=False,basewidth = 512,verbose =False)
