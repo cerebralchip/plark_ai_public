@@ -47,7 +47,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-stable_baselines3/
+stable-baselines3/
 Components/plark_ai_flask/model
 Components/plark_ai_flask/daves.zip
 
