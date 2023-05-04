@@ -146,10 +146,10 @@ class Newgame():
 				if self.gameState == "Running" :
 					if self.turn_count == self.bingo_limit:
 						self.gameState = "BINGO"
-						self.turn_count = self.turn_count-1
 
-
-			self.turn_count = self.turn_count + 1
+			#if turn_count < move_limit:
+			if self.turn_count < self.bingo_limit:
+				self.turn_count = self.turn_count + 1
 			self.phase = "PELICAN"
 
 		return self.gameState, self.gameBoard.UIOutput(self.gamePlayerTurn)
