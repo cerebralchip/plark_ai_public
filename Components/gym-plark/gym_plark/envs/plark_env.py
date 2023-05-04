@@ -194,9 +194,6 @@ class PlarkEnv(gym.Env):
         self.uioutput = uioutput
 
         ob = self._observation()
-        if not self.observation_space.contains(ob):
-            # raise an error
-            raise ValueError(f"Observation from step() is out of bounds: {ob}")
 
         reward = 0
         terminated = False
@@ -307,13 +304,6 @@ class PlarkEnv(gym.Env):
             self.render_height = self.game.panther_parameters["render_height"]
 
         observation = self._observation()
-        if not self.observation_space.contains(observation):
-            # raise an error
-            raise ValueError(
-                f"Observation from reset() is out of bounds: {observation}"
-            )
-        else:
-            print("Observation from reset() is in bounds: ", observation.shape)
 
         return observation, {}  # return the observation and info
 
