@@ -23,7 +23,7 @@ model = TRPO.load(path+"/data/agents/models/TRPO_super_pelican",env, verbose=1)
 modelType = "TRPO"
 
 #model learn
-model.learn(1000)
+model.learn(10000)
 
 #save model to /home/alexr/dev/plark/plark_ai_public/data/agents/models/agent_name
 savepath = path+"/data/agents/models/"+modelType+"_super_pelican"

@@ -146,6 +146,8 @@ class Newgame():
 				if self.gameState == "Running" :
 					if self.turn_count == self.bingo_limit:
 						self.gameState = "BINGO"
+						self.turn_count = self.turn_count-1
+
 
 			self.turn_count = self.turn_count + 1
 			self.phase = "PELICAN"

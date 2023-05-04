@@ -103,7 +103,7 @@ class SuperPelicanEnv(PlarkEnv):
             #raise an error
             raise ValueError(f"Observation from step() is out of bounds: {obs}")
         else:
-            logger.info(f"Observation from step() is in bounds: {obs.shape}")
+            logger.info(f"Observation from step() is in bounds: {obs}")
 
         reward, _info = self.calculate_reward(action)
 
