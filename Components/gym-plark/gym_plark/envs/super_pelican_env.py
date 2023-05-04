@@ -99,6 +99,11 @@ class SuperPelicanEnv(PlarkEnv):
         self.uioutput = uioutput
 
         obs = self._observation()
+        if not self.observation_space.contains(obs):
+            #raise an error
+            raise ValueError(f"Observation from step() is out of bounds: {obs}")
+        # else:
+        #     logger.info(f"Observation from step() is in bounds: {obs}")
 
         reward, _info = self.calculate_reward(action)
 
