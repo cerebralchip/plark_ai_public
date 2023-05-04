@@ -28,18 +28,18 @@ def trainer():
     )
     # make model
 
-    # model = PPO('MlpPolicy', env, verbose=1)
+    model = PPO('MlpPolicy', env, verbose=1)
     # model = PPO('CnnPolicy', env, verbose=1)
 
     # model = DQN('MlpPolicy', env, verbose=1)
 
-    model = TRPO("MlpPolicy", env, verbose=1)
+    # model = TRPO("MlpPolicy", env, verbose=1)
     # model = TRPO.load(path+"/data/agents/models/TRPO_super_pelican",env, verbose=1)
 
 
     # model = MaskablePPO('MlpPolicy', env, verbose=1)
 
-    modelType = "TRPO"
+    modelType = "PPO"
 
     # model learn
     model.learn(1000000, log_interval=1, progress_bar=True)
