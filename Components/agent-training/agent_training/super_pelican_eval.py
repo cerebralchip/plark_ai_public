@@ -4,7 +4,7 @@ from stable_baselines3 import PPO, DQN
 from sb3_contrib import TRPO, MaskablePPO
 import helper
 
-modelType = "TRPO"
+modelType = "PPO"
 path = "/home/alexr/dev/plark/plark_ai_public"
 
 
