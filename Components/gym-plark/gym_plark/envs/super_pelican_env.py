@@ -67,10 +67,10 @@ class SuperPelicanEnv(PlarkEnv):
             # if row hasnt changed, no reward
             # if row is lower, reward
             if self.new_pelican_row < self.pelican_row:
-                reward = reward + .3
+                reward = reward + 0.3
             # if row is higher, punish
             elif self.new_pelican_row > self.pelican_row:
-                reward = reward - .2
+                reward = reward - 0.2
 
         return reward, _info
 
@@ -130,7 +130,7 @@ class SuperPelicanEnv(PlarkEnv):
             if self.status == "PELICANWIN":
                 terminated = True
                 if self.driving_agent == 'pelican':
-                    reward = 1
+                    reward = 10
                     _info['result'] = "WIN"
                 else:
                     raise ValueError('driving_agent not set correctly')
